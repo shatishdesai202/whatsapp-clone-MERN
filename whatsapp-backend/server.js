@@ -9,7 +9,18 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './Env/config.env' });
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 9000 ;
+
+
+// Enter Your Pusher Detail Here
+const APP_ID = "XXXXXX"; 
+const KEY = "XXXXXXXXXX";
+const SECRET = "XXXXXXXXX";
+const CLUSTER = "XXX";
+
+// Enter Your MongoDB(CLUSTER) Password
+const MONGO_PASSWORD = "XXXXXXXXX";
+
 
 app.use(express.json());
 
@@ -21,14 +32,14 @@ app.use(function (req, res, next) {
   });
 
   const pusher = new Pusher({
-    appId: process.env.PUSHER_APPID,
-    key: process.env.PUSHER_KEY,
-    secret: process.env.PUSHER_SECRET,
-    cluster: "ap2",
+    appId: APP_ID,
+    key: KEY,
+    secret: SECRET,
+    cluster: CLUSTER,
     useTLS: true
   });
 
-const connection_url = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.axssz.mongodb.net/whatsappdb?retryWrites=true&w=majority`
+const connection_url = `mongodb+srv://admin:${MONGO_PASSWORD}@cluster0.axssz.mongodb.net/whatsappdb?retryWrites=true&w=majority`
 
 mongoose.connect(connection_url,{ useCreateIndex:true, useNewUrlParser: true , useUnifiedTopology: true});
 
@@ -56,8 +67,7 @@ db.once("open", ()=>{
             console.log('Error Triggering Pusher');
         }        
 
-
-        console.log(change);
+        // console.log(change);
     })
 
 });
